@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Heroes;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
-class HeroController extends Controller
+class HeroesController extends Controller
 {
 	private $marvelApiUrl;
 	private $marvelApiPublicKey;
@@ -29,15 +30,31 @@ class HeroController extends Controller
 
     public function show(Request $request)
 	{
-		$hero = $request->name;
+		$heroName = $request->name;
 
-		$a = Http::get($this->marvelApiUrl . 'characters', [
-			'nameStartsWith' => $hero,
+		$heroes = Http::get($this->marvelApiUrl . 'characters', [
+			'nameStartsWith' => $heroName,
 			'ts' => $this->timestamp,
 			'apikey' => $this->marvelApiPublicKey,
 			'hash' => $this->marvelApiHash
 		]);
 
-		return response($a);
+		return response($heroes);
+	}
+
+	public function store(Request $request)
+	{
+		Heroes::truncate();
+
+		foreach ($request->heroes as $hero) {
+			Heroes::create([
+				'name' => $hero['name'],
+				'img' => $hero['img'],
+				'description' => $hero['description'],
+				'api_id' => $hero['id'],
+			]);
+		}
+
+		return response()->json(['success' => true]);
 	}
 }

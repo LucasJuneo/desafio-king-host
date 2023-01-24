@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\HeroController;
+use App\Http\Controllers\HeroesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,5 +20,6 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::middleware('auth:api')->group(function() {
-	Route::get('heroes', [HeroController::class, 'show']);
+	Route::get('heroes', [HeroesController::class, 'show']);
+	Route::post('heroes', [HeroesController::class, 'store']);
 });
