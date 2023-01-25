@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('stories', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description');
-			$table->string('thumbnail');
+            $table->text('description')->nullable();
+			$table->string('thumbnail')->nullable();
 			$table->foreignId('hero_id')
 				->constrained('heroes')
 				->onUpdate('cascade')

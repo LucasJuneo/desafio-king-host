@@ -12,7 +12,7 @@ class StoriesController extends Controller
 {
     public function index(Request $request)
 	{
-		$hero = Heroes::find($request->id)->first();
+		$hero = Heroes::find($request->id);
 
 		if (count($hero->stories) > 0) {
 			return response()->json([
@@ -30,16 +30,15 @@ class StoriesController extends Controller
 
 		$stories = [];
 		foreach ($fetchedStories['results'] as $fetchedStory) {
-			$thumbnail = $fetchedStory['thumbnail']['path'].$fetchedStory['thumbnail']['extension'];
+			$thumbnail = $fetchedStory['thumbnail']['path']. '.' . $fetchedStory['thumbnail']['extension'];
 
-			$story = [
+			$story = Stories::create([
 				'title' => $fetchedStory['title'],
 				'description' => $fetchedStory['description'],
 				'thumbnail' => $thumbnail,
 				'hero_id' => $hero->id,
-			];
+			]);
 
-			Stories::create($story);
 			array_push($stories, $story);
 		}
 

@@ -25,4 +25,5 @@ Route::middleware('auth:api')->group(function() {
 	Route::get('heroes', [HeroesController::class, 'index']);
 	Route::post('heroes', [HeroesController::class, 'store']);
 	Route::get('heroes/{id}/stories', [StoriesController::class, 'index']);
+	Route::get('reset', [HeroesController::class, 'resetDataBase']);
 });
