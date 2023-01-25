@@ -28,18 +28,35 @@ class HeroesController extends Controller
 		);
 	}
 
-    public function show(Request $request)
+    public function fetchHeroes(Request $request)
 	{
 		$heroName = $request->name;
 
-		$heroes = Http::get($this->marvelApiUrl . 'characters', [
+		$response = Http::get($this->marvelApiUrl . 'characters', [
 			'nameStartsWith' => $heroName,
 			'ts' => $this->timestamp,
 			'apikey' => $this->marvelApiPublicKey,
 			'hash' => $this->marvelApiHash
 		]);
 
-		return response($heroes);
+		if ($response['code'] != 200) {
+			return response()->json(['success' => false]);
+		}
+
+		return response()->json([
+			'success' => true,
+			'heroes' => $response['data']
+		]);
+	}
+
+	public function index()
+	{
+		$heroes = Heroes::all();
+
+		return response()->json([
+			'success' => true,
+			'heroes' => $heroes
+		]);
 	}
 
 	public function store(Request $request)

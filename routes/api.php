@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::middleware('auth:api')->group(function() {
-	Route::get('heroes', [HeroesController::class, 'show']);
+	Route::get('fetch-heroes', [HeroesController::class, 'fetchHeroes']);
+	Route::get('heroes', [HeroesController::class, 'index']);
 	Route::post('heroes', [HeroesController::class, 'store']);
 });
