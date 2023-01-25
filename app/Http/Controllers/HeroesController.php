@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Heroes;
+use App\Models\Stories;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class HeroesController extends Controller
@@ -61,7 +63,7 @@ class HeroesController extends Controller
 
 	public function store(Request $request)
 	{
-		Heroes::truncate();
+		$this->resetDataBase();
 
 		foreach ($request->heroes as $hero) {
 			Heroes::create([
@@ -73,5 +75,13 @@ class HeroesController extends Controller
 		}
 
 		return response()->json(['success' => true]);
+	}
+
+	private function resetDataBase()
+	{
+		DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+		Heroes::truncate();
+		Stories::truncate();
+		DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 	}
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HeroesController;
+use App\Http\Controllers\StoriesController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,4 +24,5 @@ Route::middleware('auth:api')->group(function() {
 	Route::get('fetch-heroes', [HeroesController::class, 'fetchHeroes']);
 	Route::get('heroes', [HeroesController::class, 'index']);
 	Route::post('heroes', [HeroesController::class, 'store']);
+	Route::get('heroes/{id}/stories', [StoriesController::class, 'index']);
 });
